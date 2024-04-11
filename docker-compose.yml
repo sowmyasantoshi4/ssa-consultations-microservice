@@ -2,8 +2,8 @@ version: "3"
 
 services:
   consultation-app:
-   # container_name: consultation-app
-    image: consultation-api
+    container_name: consultation-api
+    image: consultation-img
     restart: always
     build: .
     ports:

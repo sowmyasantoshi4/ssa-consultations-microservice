@@ -5,10 +5,10 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class ConsultationDto {
+public class ConsultationReviewDto {
 	
-	private Integer appointmentId;
 	private Integer consultationId;
-	private String prescription;
+	private String feedback;
+	private Integer rating;
 
 }

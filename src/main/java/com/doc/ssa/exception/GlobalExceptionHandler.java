@@ -26,9 +26,16 @@ public class GlobalExceptionHandler {
 		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Invalid Token");
     }
 	
-	@ExceptionHandler(value = GlobalException.class)
+	@ExceptionHandler(value = Exception.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public @ResponseBody ErrorResponse handleException(GlobalException e) {
+		log.info("IN ExceptionHandler :: handleException");
+		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+	}
+	
+	@ExceptionHandler(value = GlobalException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public @ResponseBody ErrorResponse handleGlobalException(GlobalException e) {
 		log.info("IN GlobalExceptionHandler :: handleException");
 		return new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
 	}

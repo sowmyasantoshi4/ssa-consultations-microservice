@@ -3,7 +3,7 @@ package com.doc.ssa.request;
 import lombok.Data;
 
 @Data
-public class ReviewRequest {
+public class FeedbackRequest {
 	
 	private Integer consultationId;
 	private Integer rating;

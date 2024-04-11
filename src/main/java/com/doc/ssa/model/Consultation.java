@@ -26,5 +26,5 @@ public class Consultation {
 	private String feedback;
 	@Column(name = "rating")
 	private Integer rating;
-
+	
 }
