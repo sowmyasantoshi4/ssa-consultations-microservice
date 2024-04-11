@@ -68,17 +68,17 @@ public class ConsultationController {
     	Consultation cons = new Consultation();
     	ConsultationDto consDto = null;
     	Optional<Consultation> copt = null;
-    	//Optional<Appointment> aopt = null;
+    	Optional<Appointment> aopt = null;
     	Integer appId = null;
     	
     	appId = req.getAppointmentId();
-    	//aopt = appRepo.findByAppointmentId(appId);
+    	aopt = appRepo.findByAppointmentId(appId);
     	
     	try {
-    		//if( aopt.isPresent() ) {
-    			copt = conRepo.findByAppointmentId(appId);
+    		if( aopt.isPresent() ) {
+    			copt = conRepo.findByAppointment_AppointmentId(appId);
     			if( copt.isEmpty() ) {
-    				cons.setAppointmentId(req.getAppointmentId());
+    				cons.setAppointment(aopt.get());
     				cons.setPrescription(req.getPrescription());
     				cons = conRepo.save(cons);
     				consDto = modelMapper.map(cons, ConsultationDto.class);
@@ -86,12 +86,14 @@ public class ConsultationController {
     			} else {
     				throw new GlobalException("Consultation already Added !");
     			}
-//    		} else {
-//    			throw new GlobalException("Invalid Appointment ID !");
-//    		}
+    		} else {
+    			throw new GlobalException("Invalid Appointment ID !");
+    		}
     	}catch (Exception e) {
 			if(e.getMessage().contains("foreign key constraint fails")) {
 				throw new GlobalException("Appointment ID doesnot exists !");
+			}else {
+				throw new GlobalException(e.getMessage());
 			}
 		}
         return re;
@@ -140,8 +142,13 @@ public class ConsultationController {
 			  @ApiResponse(responseCode = "200", description = "Found the Consultations", 
 			    content = { @Content(mediaType = "application/json", 
 			      array = @ArraySchema(schema = @Schema(implementation = ListConsultationDto.class) ) ) } ),
-			  @ApiResponse(responseCode = "404", description = "No Consultations found", 
-			    content = @Content) })
+			  @ApiResponse(responseCode = "404", description = "Feedback not added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = ErrorResponse.class)) } ),
+			  @ApiResponse(responseCode = "400", description = "Feedback not added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = ErrorResponse.class)) } )
+			  })
     @GetMapping("/list")
     public ResponseEntity<List<ListConsultationDto>> list() {
     	ResponseEntity<List<ListConsultationDto>> re = null;
@@ -151,11 +158,15 @@ public class ConsultationController {
     	//consDto = conRepo.findAll();
     	
     	consHm = conRepo.findAllAppointmentConsultations();
-    	consHm.stream()
-    		.filter(x -> x.get("consultationId")!=null )
-    		.map(x -> consDto.add(modelMapper.map(x, ListConsultationDto.class))).collect(Collectors.toList());
-    	
-    	re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
+    	if( consHm.size()>0 ) {
+    		consHm.stream()
+	    		.filter(x -> x.get("consultationId")!=null )
+	    		.map(x -> consDto.add(modelMapper.map(x, ListConsultationDto.class))).collect(Collectors.toList());
+
+    		re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
+    	}else {
+    		throw new GlobalException("Data not found !");
+    	}
     	
         return re;
     }
@@ -195,22 +206,27 @@ public class ConsultationController {
 			  @ApiResponse(responseCode = "200", description = "Found the Consultations", 
 			    content = { @Content(mediaType = "application/json", 
 			      array = @ArraySchema(schema = @Schema(implementation = ListConsultationDto.class) ) ) } ),
-			  @ApiResponse(responseCode = "404", description = "No Consultations found", 
-			    content = @Content) })
+			  @ApiResponse(responseCode = "404", description = "Feedback not added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = ErrorResponse.class)) } ),
+			  @ApiResponse(responseCode = "400", description = "Feedback not added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = ErrorResponse.class)) } )
+			  })
     @GetMapping("/listAppConsultations")
     public ResponseEntity<List<ListConsultationDto>> listConsultations() {
     	ResponseEntity<List<ListConsultationDto>> re = null;
     	List<ListConsultationDto> consDto = new ArrayList<>();
     	List<Map<String, String>> consHm = null;
-    	try {
-    		consHm = conRepo.findAllAppointmentConsultations();
-
+    	
+		consHm = conRepo.findAllAppointmentConsultations();
+		if( consHm.size()>0 ) {
     		consHm.stream().map(x -> consDto.add(modelMapper.map(x, ListConsultationDto.class))).collect(Collectors.toList());
 
     		re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
-    	}catch (Exception e) {
-				throw new GlobalException("Error : "+e.getMessage());
-		}
+		}else {
+    		throw new GlobalException("Data not found !");
+    	}
     	
         return re;
     }

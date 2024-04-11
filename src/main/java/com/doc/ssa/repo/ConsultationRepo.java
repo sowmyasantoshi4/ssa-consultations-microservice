@@ -11,7 +11,7 @@ import com.doc.ssa.model.Consultation;
 
 public interface ConsultationRepo extends JpaRepository<Consultation, Integer> {
 
-	Optional<Consultation> findByAppointmentId(Integer appointmentId);
+	Optional<Consultation> findByAppointment_AppointmentId(Integer appointmentId);
 	
 	@Query(nativeQuery = true, value = " SELECT "
 			+ " a.appointment_id as appointmentId, doctor_name as doctorName, patient_name as patientName"

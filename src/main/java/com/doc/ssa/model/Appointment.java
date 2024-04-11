@@ -1,13 +1,15 @@
 package com.doc.ssa.model;
 
 import java.sql.Date;
-import java.sql.Time;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -39,4 +41,7 @@ public class Appointment {
 	private String appointmentForDescription;
 	
 
+	@OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Consultation consultation;
+	
 }
