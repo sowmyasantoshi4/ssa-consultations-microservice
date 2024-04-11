@@ -139,13 +139,13 @@ public class ConsultationController {
     
 	@Operation(summary = "Get list of Consultations Done")
 	@ApiResponses(value = { 
-			  @ApiResponse(responseCode = "200", description = "Found the Consultations", 
+			  @ApiResponse(responseCode = "200", description = "Consultations Data Found ", 
 			    content = { @Content(mediaType = "application/json", 
 			      array = @ArraySchema(schema = @Schema(implementation = ListConsultationDto.class) ) ) } ),
-			  @ApiResponse(responseCode = "404", description = "Feedback not added",
+			  @ApiResponse(responseCode = "404", description = "No Consultations Data found",
 					  content = { @Content(mediaType = "application/json", 
 				      schema = @Schema(implementation = ErrorResponse.class)) } ),
-			  @ApiResponse(responseCode = "400", description = "Feedback not added",
+			  @ApiResponse(responseCode = "400", description = "No Consultations Data found",
 					  content = { @Content(mediaType = "application/json", 
 				      schema = @Schema(implementation = ErrorResponse.class)) } )
 			  })
@@ -206,13 +206,13 @@ public class ConsultationController {
 	
 	@Operation(summary = "Get list of All Appointments with Consultations")
 	@ApiResponses(value = { 
-			  @ApiResponse(responseCode = "200", description = "Found the Consultations", 
+			  @ApiResponse(responseCode = "200", description = "Consultations Data Found ", 
 			    content = { @Content(mediaType = "application/json", 
 			      array = @ArraySchema(schema = @Schema(implementation = ListConsultationDto.class) ) ) } ),
-			  @ApiResponse(responseCode = "404", description = "Feedback not added",
+			  @ApiResponse(responseCode = "404", description = "No Consultations Data found",
 					  content = { @Content(mediaType = "application/json", 
 				      schema = @Schema(implementation = ErrorResponse.class)) } ),
-			  @ApiResponse(responseCode = "400", description = "Feedback not added",
+			  @ApiResponse(responseCode = "400", description = "No Consultations Data found",
 					  content = { @Content(mediaType = "application/json", 
 				      schema = @Schema(implementation = ErrorResponse.class)) } )
 			  })
