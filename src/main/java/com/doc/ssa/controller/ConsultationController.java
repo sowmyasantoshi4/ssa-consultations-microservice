@@ -162,8 +162,11 @@ public class ConsultationController {
     		consHm.stream()
 	    		.filter(x -> x.get("consultationId")!=null )
 	    		.map(x -> consDto.add(modelMapper.map(x, ListConsultationDto.class))).collect(Collectors.toList());
-
-    		re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
+    		if( consDto.size()>0 ) {
+    			re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
+    		}else {
+    			throw new GlobalException("Data not found !");
+    		}
     	}else {
     		throw new GlobalException("Data not found !");
     	}
@@ -222,11 +225,8 @@ public class ConsultationController {
 		consHm = conRepo.findAllAppointmentConsultations();
 		if( consHm.size()>0 ) {
     		consHm.stream().map(x -> consDto.add(modelMapper.map(x, ListConsultationDto.class))).collect(Collectors.toList());
-    		if( consDto.size()>0 ) {
-    			re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
-    		}else {
-    			throw new GlobalException("Data not found !");
-    		}
+
+    		re = new ResponseEntity<List<ListConsultationDto>>(consDto, HttpStatus.OK);
 		}else {
     		throw new GlobalException("Data not found !");
     	}
