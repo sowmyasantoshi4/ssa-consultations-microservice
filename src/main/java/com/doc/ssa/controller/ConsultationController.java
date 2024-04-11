@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.doc.ssa.dto.AppointmentDto;
 import com.doc.ssa.dto.ConsultationDto;
 import com.doc.ssa.dto.ListConsultationDto;
 import com.doc.ssa.exception.ErrorResponse;
@@ -24,7 +23,6 @@ import com.doc.ssa.model.Appointment;
 import com.doc.ssa.model.Consultation;
 import com.doc.ssa.repo.AppointmentRepo;
 import com.doc.ssa.repo.ConsultationRepo;
-import com.doc.ssa.request.AppointmentRequest;
 import com.doc.ssa.request.ConsultationRequest;
 import com.doc.ssa.request.FeedbackRequest;
 
@@ -50,7 +48,7 @@ public class ConsultationController {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@Operation(summary = "Add a consultation")
+	@Operation(summary = "Add a Consultation")
 	@ApiResponses(value = { 
 			  @ApiResponse(responseCode = "200", description = "Consultation Added",
 					  content = { @Content(mediaType = "application/json", 
@@ -99,7 +97,7 @@ public class ConsultationController {
         return re;
     }
 	
-	@Operation(summary = "Add a feedback for consultation")
+	@Operation(summary = "Add Feedback for Consultation")
 	@ApiResponses(value = { 
 			  @ApiResponse(responseCode = "200", description = "Feedback Added"),
 			  @ApiResponse(responseCode = "404", description = "Feedback not added",
@@ -174,36 +172,6 @@ public class ConsultationController {
         return re;
     }
 	
-	
-	
-	@Operation(summary = "Add a appointment ( to be removed once appointments microservice is ready to use ) ")
-	@ApiResponses(value = { 
-			  @ApiResponse(responseCode = "200", description = "Appointment Added",
-					  content = { @Content(mediaType = "application/json", 
-				      schema = @Schema(implementation = AppointmentDto.class)) } ),
-			  @ApiResponse(responseCode = "404", description = "Appointment not added",
-					  content = { @Content(mediaType = "application/json", 
-				      schema = @Schema(implementation = ErrorResponse.class)) } ),
-			  @ApiResponse(responseCode = "400", description = "Appointment not added",
-					  content = { @Content(mediaType = "application/json", 
-				      schema = @Schema(implementation = ErrorResponse.class)) } )
-			  })
-	@PostMapping("/saveAppointment")
-    public ResponseEntity<AppointmentDto> saveAppointment(@RequestBody AppointmentRequest req) throws Exception {
-    	ResponseEntity<AppointmentDto> re = null;
-    	Appointment appointment = new Appointment();
-    	AppointmentDto appResp = new AppointmentDto();
-    	
-    	try {
-    		 appointment = appRepo.save(modelMapper.map(req, Appointment.class));
-    		 appResp = modelMapper.map(appointment, AppointmentDto.class);
-    		re = new ResponseEntity<AppointmentDto>(appResp, HttpStatus.OK);
-    	}catch (Exception e) {
-			throw new GlobalException("Appointment not added. Error : "+e.getMessage());
-		}
-        return re;
-    }
-	
 	@Operation(summary = "Get list of All Appointments with Consultations")
 	@ApiResponses(value = { 
 			  @ApiResponse(responseCode = "200", description = "Consultations Data Found ", 
@@ -233,5 +201,38 @@ public class ConsultationController {
     	
         return re;
     }
+	
+	
+	/*********** Moved to appointments microservice ****************/
+	/* Files Can be deleted : AppointmentDto AppointmentRequest
+	/*
+	@Operation(summary = "Add a appointment ( to be removed once appointments microservice is ready to use ) ")
+	@ApiResponses(value = { 
+			  @ApiResponse(responseCode = "200", description = "Appointment Added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = AppointmentDto.class)) } ),
+			  @ApiResponse(responseCode = "404", description = "Appointment not added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = ErrorResponse.class)) } ),
+			  @ApiResponse(responseCode = "400", description = "Appointment not added",
+					  content = { @Content(mediaType = "application/json", 
+				      schema = @Schema(implementation = ErrorResponse.class)) } )
+			  })
+	@PostMapping("/saveAppointment")
+    public ResponseEntity<AppointmentDto> saveAppointment(@RequestBody AppointmentRequest req) throws Exception {
+    	ResponseEntity<AppointmentDto> re = null;
+    	Appointment appointment = new Appointment();
+    	AppointmentDto appResp = new AppointmentDto();
+    	
+    	try {
+    		 appointment = appRepo.save(modelMapper.map(req, Appointment.class));
+    		 appResp = modelMapper.map(appointment, AppointmentDto.class);
+    		re = new ResponseEntity<AppointmentDto>(appResp, HttpStatus.OK);
+    	}catch (Exception e) {
+			throw new GlobalException("Appointment not added. Error : "+e.getMessage());
+		}
+        return re;
+    }
+    */
 	
 }
