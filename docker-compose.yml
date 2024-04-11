@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  consultation-app:
+   # container_name: consultation-app
+    image: consultation-api
+    restart: always
+    build: .
+    ports:
+      - 8083:8083 
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mysql
+      MYSQL_PORT: 3306
+      
+  mysqldb: 
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      -  /home/sowmya/Desktop/db:/var/lib/mysql
+    ports: 
+     - 3307:3306   
+    environment:
+      MYSQL_DATABASE: clinicappdb
+      MYSQL_ROOT_PASSWORD: mysql
+      
+
+       
+   
