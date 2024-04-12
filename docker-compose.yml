@@ -1,14 +1,12 @@
 version: "3"
 
-# run this file or ssa-appointments-api/docker-compose.yml file as All containers configured in single file, running this file creates all images
-
 services:
   appointment-app:
     container_name: appointment-api
     image: appointment-img
     restart: always
     build: 
-      ./ssa-appointments-api
+      ../ssa-appointments-api
     ports:
       - 8082:8082 
     environment:
@@ -22,7 +20,7 @@ services:
     image: consultation-img
     restart: always
     build: 
-      ./ssa-consultations-api
+      .
     ports:
       - 8083:8083 
     environment:
