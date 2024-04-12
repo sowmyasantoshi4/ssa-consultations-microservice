@@ -36,7 +36,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@OpenAPIDefinition(info=@Info(title="SSA - Consultation API"))
+@OpenAPIDefinition(info=@Info(title="Consultation Ms"))
 public class ConsultationController {
 	
 	@Autowired
